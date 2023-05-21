@@ -4,6 +4,17 @@ const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
 const PORT = 3900;
+const mongoose = require("mongoose");
+require("dotenv").config();
+
+// connect datanase
+mongoose
+  .connect(process.env.MONGOURL)
+  .then(() => {
+    console.log("Conectting DB...");
+  }).catch((err) => {
+    console.log(err);
+});
 
 // middleware
 app.use("/api/users", userRoute);
