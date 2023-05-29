@@ -17,4 +17,21 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// login
+router.post("/login", async (req, res) => {
+  try {
+    // emailでユーザー検索する、見つからなかったらエラー
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(404).send("ユーザーが見つかりません");
+
+    // ユーザーのパスワードが一致するかどうかチェックする
+    const validPassword = req.body.password === user.password;
+    if (!validPassword) return res.status(400).json("パスワードが違います");
+
+    return res.status(200).json(user);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
 module.exports = router;
